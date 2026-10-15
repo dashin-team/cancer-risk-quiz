@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>你離癌症有多近？10 題生活風險檢測</title>
+<meta name="description" content="10 題生活習慣小測驗，了解可調整的癌症風險因子。僅供衛教參考。">
+<style>
+:root{--bg:#fbf6ef;--card:#fff;--ink:#3b3330;--muted:#857a73;--pri:#d9774b;--pri2:#c45f35;--soft:#f6e6da;--green:#5f9e7a;--line:#eadfd5}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang TC","Noto Sans TC","Noto Sans CJK TC","Microsoft JhengHei","Heiti TC",sans-serif;line-height:1.6}
+.wrap{max-width:480px;margin:0 auto;padding:20px 18px calc(28px + env(safe-area-inset-bottom));min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex:1;flex-direction:column;animation:fade .35s ease}
+.screen.active{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.badge{display:inline-block;background:var(--soft);color:var(--pri2);font-size:13px;padding:4px 12px;border-radius:99px;font-weight:600}
+h1{font-size:28px;line-height:1.35;margin:16px 0 10px}
+h1 small{display:block;font-size:17px;color:var(--pri2);font-weight:600;margin-top:4px}
+p{margin:0 0 12px}
+.muted{color:var(--muted);font-size:14px}
+.card{background:var(--card);border-radius:20px;padding:20px;box-shadow:0 4px 20px rgba(120,80,50,.08);margin:12px 0}
+label{font-size:15px;font-weight:600;display:block;margin-bottom:6px}
+input{width:100%;font-size:17px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fffdfb;color:var(--ink);font-family:inherit}
+input:focus{outline:none;border-color:var(--pri)}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-size:18px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;transition:transform .1s,background .2s}
+.btn:active{transform:scale(.98)}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-pri:hover{background:var(--pri2)}
+.btn-ghost{background:transparent;color:var(--pri2);border:1.5px solid var(--pri)}
+.btn-soft{background:var(--soft);color:var(--pri2)}
+.stack>*+*{margin-top:10px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.back{border:0;background:none;font-size:15px;color:var(--muted);padding:6px 4px;cursor:pointer;font-family:inherit}
+.back:disabled{visibility:hidden}
+.count{margin-left:auto;font-size:14px;color:var(--muted);font-weight:600}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#f0a77f,var(--pri));width:0;transition:width .35s ease;border-radius:99px}
+.qnum{font-size:14px;color:var(--pri2);font-weight:700;margin-top:26px}
+.qtext{font-size:22px;font-weight:700;line-height:1.5;margin:8px 0 18px;min-height:3em}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:auto}
+.ans{padding:20px 0;font-size:20px;border-radius:16px;border:2px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-family:inherit;cursor:pointer}
+.ans.sel{border-color:var(--pri);background:var(--soft);color:var(--pri2)}
+.helper{font-size:14px;background:#fff8f2;border:1px dashed #e7c4ad;border-radius:14px;padding:12px 14px}
+.helper .row{display:flex;gap:8px;margin-top:8px}
+.helper input{font-size:16px;padding:9px 10px}
+.helper output{display:block;margin-top:8px;font-weight:600;color:var(--pri2)}
+.gauge{position:relative;width:260px;margin:4px auto 0}
+.gauge svg{width:100%;display:block}
+.gauge .val{position:absolute;left:0;right:0;bottom:6px;text-align:center}
+.gauge .val b{font-size:52px;line-height:1;color:var(--ink)}
+.gauge .val span{font-size:22px;font-weight:700}
+.level{text-align:center;font-size:23px;font-weight:800;margin:10px 0 6px}
+.hi{text-align:center;color:var(--muted);font-size:15px;margin-bottom:4px}
+.factors{list-style:none;padding:0;margin:0}
+.factors li{padding:12px 0;border-top:1px solid var(--line)}
+.factors li:first-child{border-top:0;padding-top:0}
+.factors b{display:flex;justify-content:space-between}
+.factors b em{font-style:normal;color:var(--pri2);font-size:14px}
+.factors small{display:block;color:var(--muted);font-size:14px;line-height:1.55;margin-top:2px}
+.disc{font-size:13px;color:var(--muted);background:#f3ece4;border-radius:12px;padding:12px 14px;line-height:1.6}
+.foot{text-align:center;font-size:13px;color:var(--muted);margin-top:18px}
+#imgBox{display:none;text-align:center}
+#imgBox img{width:100%;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+h2{font-size:18px;margin:0 0 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section class="screen active" id="s-intro">
+  <div><span class="badge">生活風險小檢測 · 約 1 分鐘</span></div>
+  <h1>你離癌症有多近？<small>10 題生活風險檢測</small></h1>
+  <p>很多癌症風險，其實藏在每天的生活習慣裡。用 10 個簡單的是／否問題，看看有哪些地方可以照顧得更好。</p>
+  <div class="card">
+    <label for="name">怎麼稱呼你？（選填）</label>
+    <input id="name" maxlength="12" placeholder="例如：小美" autocomplete="off">
+    <p class="muted" style="margin:8px 0 0">名字只會出現在你的結果圖片上，不會傳送到任何地方。</p>
+  </div>
+  <div class="disc">本測驗僅供衛教參考，不是醫療診斷，分數也不代表罹癌機率；風險因子可能增加風險，並非代表一定會罹癌。</div>
+  <div style="margin-top:auto;padding-top:20px"><button class="btn btn-pri" id="startBtn">開始檢測</button></div>
+  <div class="foot">富邦人壽 梁仕翰 關心您</div>
+</section>
+
+<section class="screen" id="s-quiz">
+  <div class="top"><button class="back" id="backBtn">‹ 上一題</button><span class="count" id="count">1 / 10</span></div>
+  <div class="bar"><i id="barFill"></i></div>
+  <div class="qnum" id="qnum">第 1 題</div>
+  <div class="qtext" id="qtext"></div>
+  <div id="extra"></div>
+  <div class="answers" style="padding-top:20px">
+    <button class="ans" data-v="1">是</button>
+    <button class="ans" data-v="0">否</button>
+  </div>
+  <div class="foot">依照最近的生活狀況，直覺作答就好</div>
+</section>
+
+<section class="screen" id="s-result">
+  <div class="hi" id="hi">你的檢測結果</div>
+  <div class="gauge">
+    <svg viewBox="0 0 260 150">
+      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7fb894"/><stop offset=".5" stop-color="#f0b45f"/><stop offset="1" stop-color="#d9674b"/></linearGradient></defs>
+      <path d="M20 135 A110 110 0 0 1 240 135" fill="none" stroke="#eadfd5" stroke-width="20" stroke-linecap="round"/>
+      <path id="arc" d="M20 135 A110 110 0 0 1 240 135" fill="none" stroke="url(#g)" stroke-width="20" stroke-linecap="round"/>
+    </svg>
+    <div class="val"><b id="pct">0</b><span>%</span></div>
+  </div>
+  <div class="level" id="level"></div>
+  <div class="card"><p id="ltext" style="margin:0"></p></div>
+  <div class="card">
+    <h2>你勾選的風險因子</h2>
+    <ul class="factors" id="factors"></ul>
+  </div>
+  <div class="disc">本測驗僅供衛教參考，不是醫療診斷，分數也不代表罹癌機率；風險因子可能增加風險，並非代表一定會罹癌。<br>資料參考：國民健康署、WHO／IARC</div>
+  <div class="stack" style="margin-top:16px">
+    <a class="btn btn-pri" href="https://ss7703270327-ship-it.github.io/human-risk-map/" target="_blank" rel="noopener">看看自己的風險地圖</a>
+    <button class="btn btn-soft" id="dlBtn">下載結果圖片</button>
+    <div id="imgBox"><p class="muted">iPhone 使用者：長按圖片即可儲存到相簿</p><img id="cardImg" alt="檢測結果圖片"></div>
+    <button class="btn btn-ghost" id="retryBtn">重新測驗</button>
+  </div>
+  <div class="foot">富邦人壽 梁仕翰 關心您</div>
+</section>
+</div>
+
+<script>
+const Q=[
+["你現在有吸菸（含電子煙、加熱菸），或戒菸還不到 10 年嗎？","吸菸",18,"菸品為 IARC 第一級致癌物，與肺、口腔、食道、膀胱等多種癌症相關。"],
+["你有嚼檳榔的習慣嗎？","檳榔",12,"檳榔子為 IARC 第一級致癌物，台灣口腔癌患者多數有嚼檳榔史。"],
+["你幾乎每天喝酒，或常常一次喝很多嗎？","飲酒",10,"酒精飲料為 IARC 第一級致癌物，增加口腔、食道、肝、大腸、乳癌風險。"],
+["爸媽或兄弟姊妹中，有人得過癌症嗎？","家族史",12,"一等親罹癌史會提高大腸癌、乳癌、肺癌等風險。"],
+["你是 B 型或 C 型肝炎帶原者，或不確定自己有沒有驗過嗎？","肝炎感染",10,"B、C 肝是台灣肝癌最主要的風險因子。"],
+["你的 BMI 超過 27，或腰圍男生≧90 公分／女生≧80 公分嗎？","肥胖",8,"肥胖與大腸、子宮內膜、停經後乳癌、腎臟癌等 13 種癌症相關。"],
+["你一週運動加起來不到 150 分鐘嗎？","缺乏運動",6,"WHO 建議每週至少 150 分鐘中度運動。"],
+["你常吃加工肉（香腸、培根、火腿）、烤炸食物，蔬果卻吃得少嗎？","飲食習慣",7,"加工肉品為 IARC 第一級致癌物，與大腸癌相關；建議每天至少 3 蔬 2 果。"],
+["你符合國健署免費癌症篩檢年齡，卻沒有定期去篩檢嗎？（大腸、乳房、子宮頸、口腔、肺）","未定期篩檢",10,"篩檢不會讓人得癌，但能提早發現、提高治療成效；這題反映少了早期發現的機會。"],
+["你的工作或生活環境常接觸二手菸、廚房油煙、粉塵或化學物質嗎？","環境／職業暴露",7,"二手菸、石綿、苯等為 IARC 第一級致癌物；廚房油煙與非吸菸者肺癌相關。"]];
+const L=[
+[20,"你的生活習慣很棒","目前可能增加風險的因子不多，繼續保持！健康不是運氣，是每天的選擇。記得到了年齡就去做免費的癌症篩檢，讓好習慣加上早期發現，成為雙重保護。","#5f9e7a"],
+[40,"有幾個地方可以更好","你有一些相關危險因子，但大多是可以慢慢調整的。從最容易的一項開始就好，例如多走路、多吃一份蔬菜。也提醒自己定期篩檢，對自己的身體多一點掌握。","#c99a3a"],
+[60,"值得多留意一下","你的生活中有好幾個可能增加風險的因子。這不代表一定會生病，但是個好時機跟醫師聊聊、把該做的篩檢安排起來。每改變一個習慣，分數就會往下降。","#d9824b"],
+[100,"建議進一步了解","你勾選的風險因子比較多，建議盡快到醫院或衛生所做適合的篩檢，也可以請醫師幫你評估。改變永遠不嫌晚，戒菸、戒檳榔、少喝酒都能實際降低風險。你在乎自己，也有人在乎你。","#c45f35"]];
+const DISC="本測驗僅供衛教參考，不是醫療診斷，分數也不代表罹癌機率；風險因子可能增加風險，並非代表一定會罹癌。";
+const $=id=>document.getElementById(id);
+let idx=0,ans=[],name="",res=null;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0)}
+function render(){
+  $('count').textContent=(idx+1)+" / 10";$('qnum').textContent="第 "+(idx+1)+" 題";
+  $('qtext').textContent=Q[idx][0];$('barFill').style.width=(idx/10*100)+"%";
+  $('backBtn').disabled=false;
+  document.querySelectorAll('.ans').forEach(b=>b.classList.toggle('sel',ans[idx]!==undefined&&String(ans[idx])===b.dataset.v));
+  $('extra').innerHTML=idx===5?`<div class="helper">不確定 BMI？快速算一下：<div class="row"><input id="bh" type="number" inputmode="decimal" placeholder="身高 cm"><input id="bw" type="number" inputmode="decimal" placeholder="體重 kg"></div><output id="bo">BMI = 體重(kg) ÷ 身高(m)²</output></div>`:"";
+  if(idx===5){const f=()=>{const h=+$('bh').value/100,w=+$('bw').value;if(h>0.5&&w>0){const b=w/h/h;$('bo').textContent="你的 BMI 約 "+b.toFixed(1)+(b>27?"（超過 27）":b>=24?"（略高，未超過 27）":"（在 27 以下）")}};$('bh').oninput=f;$('bw').oninput=f}
+}
+$('startBtn').onclick=()=>{name=$('name').value.trim();idx=0;ans=[];show('s-quiz');render()};
+$('backBtn').onclick=()=>{if(idx>0){idx--;render()}else show('s-intro')};
+document.querySelectorAll('.ans').forEach(b=>b.onclick=()=>{ans[idx]=+b.dataset.v;b.classList.add('sel');
+  setTimeout(()=>{if(idx<9){idx++;render()}else{$('barFill').style.width="100%";result()}},180)});
+function result(){
+  const pct=Q.reduce((s,q,i)=>s+(ans[i]?q[2]:0),0);
+  const lv=L.find(l=>pct<=l[0]);const checked=Q.filter((q,i)=>ans[i]);
+  res={pct,lv,checked};
+  $('hi').textContent=name?name+"，這是你的檢測結果":"你的檢測結果";
+  $('level').textContent=lv[1];$('level').style.color=lv[3];$('ltext').textContent=lv[2];
+  $('factors').innerHTML=checked.length?checked.map(q=>`<li><b>${q[1]}<em>+${q[2]}</em></b><small>${q[3]}</small></li>`).join(""):`<li><b>沒有勾選任何風險因子</b><small>很棒！記得持續保持，並依年齡定期篩檢。</small></li>`;
+  $('imgBox').style.display="none";
+  show('s-result');
+  const arc=$('arc'),len=arc.getTotalLength();arc.style.strokeDasharray=len;arc.style.strokeDashoffset=len;arc.getBoundingClientRect();
+  arc.style.transition="stroke-dashoffset 1.4s cubic-bezier(.3,.7,.3,1)";requestAnimationFrame(()=>arc.style.strokeDashoffset=len*(1-pct/100));
+  const t0=performance.now();(function tick(t){const p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);$('pct').textContent=Math.round(pct*e);if(p<1)requestAnimationFrame(tick)})(t0);
+}
+$('retryBtn').onclick=()=>{idx=0;ans=[];show('s-intro')};
+const FONT='"PingFang TC","Noto Sans TC","Noto Sans CJK TC","Microsoft JhengHei","Heiti TC",sans-serif';
+function wrap(ctx,text,x,y,maxW,lh,maxLines){let line="",lines=[];for(const ch of text){if(ctx.measureText(line+ch).width>maxW){lines.push(line);line=ch}else line+=ch}if(line)lines.push(line);
+  if(maxLines&&lines.length>maxLines){lines=lines.slice(0,maxLines);lines[maxLines-1]=lines[maxLines-1].slice(0,-1)+"…"}
+  lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));return y+lines.length*lh}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function drawCard(){
+  const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');const {pct,lv,checked}=res;
+  x.fillStyle="#fbf6ef";x.fillRect(0,0,1080,1350);
+  x.fillStyle="#f6e6da";x.beginPath();x.arc(980,90,200,0,7);x.fill();x.beginPath();x.arc(60,1300,160,0,7);x.fill();
+  x.fillStyle="#fff";rr(x,60,60,960,1230,40);x.fill();
+  x.textAlign="center";x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("10 題生活風險檢測",540,150);
+  x.fillStyle="#3b3330";x.font="800 60px "+FONT;x.fillText("你離癌症有多近？",540,230);
+  let y=230;if(name){x.font="500 36px "+FONT;x.fillStyle="#857a73";x.fillText(name+" 的檢測結果",540,295);y=295}
+  const cy=y+260;x.lineCap="round";x.lineWidth=36;x.strokeStyle="#eadfd5";x.beginPath();x.arc(540,cy,190,Math.PI,2*Math.PI);x.stroke();
+  const g=x.createLinearGradient(350,0,730,0);g.addColorStop(0,"#7fb894");g.addColorStop(.5,"#f0b45f");g.addColorStop(1,"#d9674b");
+  if(pct>0){x.strokeStyle=g;x.beginPath();x.arc(540,cy,190,Math.PI,Math.PI+Math.PI*pct/100);x.stroke()}
+  x.fillStyle="#3b3330";x.font="800 130px "+FONT;x.fillText(pct+"%",540,cy-10);
+  x.fillStyle=lv[3];x.font="800 54px "+FONT;x.fillText(lv[1],540,cy+90);
+  x.textAlign="left";x.fillStyle="#5a4f4a";x.font="400 32px "+FONT;y=wrap(x,lv[2],130,cy+160,820,48,4);
+  y+=30;x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("勾選的風險因子",130,y);y+=56;
+  x.font="500 32px "+FONT;
+  if(!checked.length){x.fillStyle="#5f9e7a";x.fillText("沒有勾選任何風險因子，繼續保持！",130,y);y+=50}
+  else{let col=0;checked.forEach((q,i)=>{const t=q[1];x.font="500 30px "+FONT;const w=x.measureText(t).width+44;if(col+w>820){col=0;y+=64}
+    x.fillStyle="#f6e6da";rr(x,130+col,y-38,w,52,26);x.fill();x.fillStyle="#c45f35";x.fillText(t,130+col+22,y-2);col+=w+14});y+=50}
+  x.fillStyle="#f3ece4";rr(x,110,1080,860,130,20);x.fill();
+  x.fillStyle="#857a73";x.font="400 24px "+FONT;wrap(x,DISC,140,1122,800,36,2);x.fillText("資料參考：國民健康署、WHO／IARC",140,1190);
+  x.textAlign="center";x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("富邦人壽 梁仕翰 關心您",540,1255);
+  return c;
+}
+$('dlBtn').onclick=async()=>{try{await document.fonts.ready}catch(e){}
+  const url=drawCard().toDataURL("image/png");$('cardImg').src=url;$('imgBox').style.display="block";
+  const a=document.createElement('a');a.href=url;a.download="癌症風險檢測結果.png";document.body.appendChild(a);a.click();a.remove();
+  $('imgBox').scrollIntoView({behavior:"smooth",block:"center"})};
+</script>
+</body>
+</html>
