@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>你離癌症有多近？10 題生活風險檢測</title>
+<title>我們與癌的距離｜10 題生活風險檢測</title>
 <meta name="description" content="10 題生活習慣小測驗，了解可調整的癌症風險因子。僅供衛教參考。">
 <style>
 :root{--bg:#fbf6ef;--card:#fff;--ink:#3b3330;--muted:#857a73;--pri:#d9774b;--pri2:#c45f35;--soft:#f6e6da;--green:#5f9e7a;--line:#eadfd5}
@@ -61,6 +61,7 @@ input:focus{outline:none;border-color:var(--pri)}
 .foot{text-align:center;font-size:13px;color:var(--muted);margin-top:18px}
 #imgBox{display:none;text-align:center}
 #imgBox img{width:100%;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
+.rtitle{text-align:center;font-size:22px;font-weight:800;color:var(--pri2);margin:4px 0 2px}
 h2{font-size:18px;margin:0 0 10px}
 </style>
 </head>
@@ -69,7 +70,7 @@ h2{font-size:18px;margin:0 0 10px}
 
 <section class="screen active" id="s-intro">
   <div><span class="badge">生活風險小檢測 · 約 1 分鐘</span></div>
-  <h1>你離癌症有多近？<small>10 題生活風險檢測</small></h1>
+  <h1>我們與癌的距離<small>10 題生活風險檢測</small></h1>
   <p>很多癌症風險，其實藏在每天的生活習慣裡。用 10 個簡單的是／否問題，看看有哪些地方可以照顧得更好。</p>
   <div class="card">
     <label for="name">怎麼稱呼你？（選填）</label>
@@ -94,6 +95,7 @@ h2{font-size:18px;margin:0 0 10px}
 </section>
 
 <section class="screen" id="s-result">
+  <div class="rtitle">我們與癌的距離</div>
   <div class="hi" id="hi">你的檢測結果</div>
   <div class="gauge">
     <svg viewBox="0 0 260 150">
@@ -177,7 +179,7 @@ function drawCard(){
   x.fillStyle="#f6e6da";x.beginPath();x.arc(980,90,200,0,7);x.fill();x.beginPath();x.arc(60,1300,160,0,7);x.fill();
   x.fillStyle="#fff";rr(x,60,60,960,1230,40);x.fill();
   x.textAlign="center";x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("10 題生活風險檢測",540,150);
-  x.fillStyle="#3b3330";x.font="800 60px "+FONT;x.fillText("你離癌症有多近？",540,230);
+  x.fillStyle="#3b3330";x.font="800 60px "+FONT;x.fillText("我們與癌的距離",540,230);
   let y=230;if(name){x.font="500 36px "+FONT;x.fillStyle="#857a73";x.fillText(name+" 的檢測結果",540,295);y=295}
   const cy=y+260;x.lineCap="round";x.lineWidth=36;x.strokeStyle="#eadfd5";x.beginPath();x.arc(540,cy,190,Math.PI,2*Math.PI);x.stroke();
   const g=x.createLinearGradient(350,0,730,0);g.addColorStop(0,"#7fb894");g.addColorStop(.5,"#f0b45f");g.addColorStop(1,"#d9674b");
