@@ -35,8 +35,8 @@ input:focus{outline:none;border-color:var(--pri)}
 .count{margin-left:auto;font-size:14px;color:var(--muted);font-weight:600}
 .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;background:linear-gradient(90deg,#f0a77f,var(--pri));width:0;transition:width .35s ease;border-radius:99px}
-.qnum{font-size:14px;color:var(--pri2);font-weight:700;margin-top:26px}
-.qtext{font-size:22px;font-weight:700;line-height:1.5;margin:8px 0 18px;min-height:3em}
+.qnum{font-size:14px;color:var(--pri2);font-weight:700}
+.qtext{font-size:21px;font-weight:700;line-height:1.5;margin:4px 0 12px;min-height:3em}
 .answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:auto}
 .ans{padding:20px 0;font-size:20px;border-radius:16px;border:2px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-family:inherit;cursor:pointer}
 .ans.sel{border-color:var(--pri);background:var(--soft);color:var(--pri2)}
@@ -62,6 +62,9 @@ input:focus{outline:none;border-color:var(--pri)}
 #imgBox{display:none;text-align:center}
 #imgBox img{width:100%;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
 .rtitle{text-align:center;font-size:22px;font-weight:800;color:var(--pri2);margin:4px 0 2px}
+.ill{display:block;width:100%;max-width:300px;aspect-ratio:1;margin:0 auto;border-radius:20px;object-fit:cover;background:#f3e9df}
+.ill.q{max-width:min(280px,36vh);margin-top:16px}
+.ill.r{max-width:220px;margin-top:6px}
 h2{font-size:18px;margin:0 0 10px}
 </style>
 </head>
@@ -70,6 +73,7 @@ h2{font-size:18px;margin:0 0 10px}
 
 <section class="screen active" id="s-intro">
   <div><span class="badge">生活風險小檢測 · 約 1 分鐘</span></div>
+  <img class="ill" src="images/01.webp" alt="健康的家庭" width="300" height="300" style="margin-top:14px">
   <h1>我們與癌的距離<small>10 題生活風險檢測</small></h1>
   <p>很多癌症風險，其實藏在每天的生活習慣裡。用 10 個簡單的是／否問題，看看有哪些地方可以照顧得更好。</p>
   <div class="card">
@@ -84,7 +88,8 @@ h2{font-size:18px;margin:0 0 10px}
 <section class="screen" id="s-quiz">
   <div class="top"><button class="back" id="backBtn">‹ 上一題</button><span class="count" id="count">1 / 10</span></div>
   <div class="bar"><i id="barFill"></i></div>
-  <div class="qnum" id="qnum">第 1 題</div>
+  <img class="ill q" id="qimg" src="images/02.webp" alt="" width="210" height="210">
+  <div class="qnum" id="qnum" style="margin-top:14px">第 1 題</div>
   <div class="qtext" id="qtext"></div>
   <div id="extra"></div>
   <div class="answers" style="padding-top:20px">
@@ -105,6 +110,7 @@ h2{font-size:18px;margin:0 0 10px}
     </svg>
     <div class="val"><b id="pct">0</b><span>%</span></div>
   </div>
+  <img class="ill r" id="rimg" alt="" width="220" height="220">
   <div class="level" id="level"></div>
   <div class="card"><p id="ltext" style="margin:0"></p></div>
   <div class="card">
@@ -138,19 +144,21 @@ const L=[
 [40,"有幾個地方可以更好","你有一些相關危險因子，但大多是可以慢慢調整的。從最容易的一項開始就好，例如多走路、多吃一份蔬菜。也提醒自己定期篩檢，對自己的身體多一點掌握。","#c99a3a"],
 [60,"值得多留意一下","你的生活中有好幾個可能增加風險的因子。這不代表一定會生病，但是個好時機跟醫師聊聊、把該做的篩檢安排起來。每改變一個習慣，分數就會往下降。","#d9824b"],
 [100,"建議進一步了解","你勾選的風險因子比較多，建議盡快到醫院或衛生所做適合的篩檢，也可以請醫師幫你評估。改變永遠不嫌晚，戒菸、戒檳榔、少喝酒都能實際降低風險。你在乎自己，也有人在乎你。","#c45f35"]];
+const imgSrc=n=>"images/"+String(n).padStart(2,"0")+".webp";
+const imgCache={};function loadImg(n){return imgCache[n]||(imgCache[n]=new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=imgSrc(n)}))}
 const DISC="本測驗僅供衛教參考，不是醫療診斷，分數也不代表罹癌機率；風險因子可能增加風險，並非代表一定會罹癌。";
 const $=id=>document.getElementById(id);
 let idx=0,ans=[],name="",res=null;
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0)}
 function render(){
   $('count').textContent=(idx+1)+" / 10";$('qnum').textContent="第 "+(idx+1)+" 題";
-  $('qtext').textContent=Q[idx][0];$('barFill').style.width=(idx/10*100)+"%";
+  $('qtext').textContent=Q[idx][0];$('qimg').src=imgSrc(idx+2);$('qimg').alt=Q[idx][1];$('barFill').style.width=(idx/10*100)+"%";
   $('backBtn').disabled=false;
   document.querySelectorAll('.ans').forEach(b=>b.classList.toggle('sel',ans[idx]!==undefined&&String(ans[idx])===b.dataset.v));
   $('extra').innerHTML=idx===5?`<div class="helper">不確定 BMI？快速算一下：<div class="row"><input id="bh" type="number" inputmode="decimal" placeholder="身高 cm"><input id="bw" type="number" inputmode="decimal" placeholder="體重 kg"></div><output id="bo">BMI = 體重(kg) ÷ 身高(m)²</output></div>`:"";
   if(idx===5){const f=()=>{const h=+$('bh').value/100,w=+$('bw').value;if(h>0.5&&w>0){const b=w/h/h;$('bo').textContent="你的 BMI 約 "+b.toFixed(1)+(b>27?"（超過 27）":b>=24?"（略高，未超過 27）":"（在 27 以下）")}};$('bh').oninput=f;$('bw').oninput=f}
 }
-$('startBtn').onclick=()=>{name=$('name').value.trim();idx=0;ans=[];show('s-quiz');render()};
+$('startBtn').onclick=()=>{for(let n=2;n<=15;n++)loadImg(n);name=$('name').value.trim();idx=0;ans=[];show('s-quiz');render()};
 $('backBtn').onclick=()=>{if(idx>0){idx--;render()}else show('s-intro')};
 document.querySelectorAll('.ans').forEach(b=>b.onclick=()=>{ans[idx]=+b.dataset.v;b.classList.add('sel');
   setTimeout(()=>{if(idx<9){idx++;render()}else{$('barFill').style.width="100%";result()}},180)});
@@ -159,7 +167,7 @@ function result(){
   const lv=L.find(l=>pct<=l[0]);const checked=Q.filter((q,i)=>ans[i]);
   res={pct,lv,checked};
   $('hi').textContent=name?name+"，這是你的檢測結果":"你的檢測結果";
-  $('level').textContent=lv[1];$('level').style.color=lv[3];$('ltext').textContent=lv[2];
+  const li=L.indexOf(lv)+12;$('rimg').src=imgSrc(li);$('rimg').alt=lv[1];res.n=li;$('level').textContent=lv[1];$('level').style.color=lv[3];$('ltext').textContent=lv[2];
   $('factors').innerHTML=checked.length?checked.map(q=>`<li><b>${q[1]}<em>+${q[2]}</em></b><small>${q[3]}</small></li>`).join(""):`<li><b>沒有勾選任何風險因子</b><small>很棒！記得持續保持，並依年齡定期篩檢。</small></li>`;
   $('imgBox').style.display="none";
   show('s-result');
@@ -173,31 +181,35 @@ function wrap(ctx,text,x,y,maxW,lh,maxLines){let line="",lines=[];for(const ch o
   if(maxLines&&lines.length>maxLines){lines=lines.slice(0,maxLines);lines[maxLines-1]=lines[maxLines-1].slice(0,-1)+"…"}
   lines.forEach((l,i)=>ctx.fillText(l,x,y+i*lh));return y+lines.length*lh}
 function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
-function drawCard(){
+function drawCard(img){
   const c=document.createElement('canvas');c.width=1080;c.height=1350;const x=c.getContext('2d');const {pct,lv,checked}=res;
   x.fillStyle="#fbf6ef";x.fillRect(0,0,1080,1350);
   x.fillStyle="#f6e6da";x.beginPath();x.arc(980,90,200,0,7);x.fill();x.beginPath();x.arc(60,1300,160,0,7);x.fill();
   x.fillStyle="#fff";rr(x,60,60,960,1230,40);x.fill();
-  x.textAlign="center";x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("10 題生活風險檢測",540,150);
-  x.fillStyle="#3b3330";x.font="800 60px "+FONT;x.fillText("我們與癌的距離",540,230);
-  let y=230;if(name){x.font="500 36px "+FONT;x.fillStyle="#857a73";x.fillText(name+" 的檢測結果",540,295);y=295}
-  const cy=y+260;x.lineCap="round";x.lineWidth=36;x.strokeStyle="#eadfd5";x.beginPath();x.arc(540,cy,190,Math.PI,2*Math.PI);x.stroke();
-  const g=x.createLinearGradient(350,0,730,0);g.addColorStop(0,"#7fb894");g.addColorStop(.5,"#f0b45f");g.addColorStop(1,"#d9674b");
-  if(pct>0){x.strokeStyle=g;x.beginPath();x.arc(540,cy,190,Math.PI,Math.PI+Math.PI*pct/100);x.stroke()}
-  x.fillStyle="#3b3330";x.font="800 130px "+FONT;x.fillText(pct+"%",540,cy-10);
-  x.fillStyle=lv[3];x.font="800 54px "+FONT;x.fillText(lv[1],540,cy+90);
-  x.textAlign="left";x.fillStyle="#5a4f4a";x.font="400 32px "+FONT;y=wrap(x,lv[2],130,cy+160,820,48,4);
-  y+=30;x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("勾選的風險因子",130,y);y+=56;
+  x.textAlign="center";x.fillStyle="#c45f35";x.font="700 32px "+FONT;x.fillText("10 題生活風險檢測",540,140);
+  x.fillStyle="#3b3330";x.font="800 60px "+FONT;x.fillText("我們與癌的距離",540,215);
+  if(name){x.font="500 34px "+FONT;x.fillStyle="#857a73";x.fillText(name+" 的檢測結果",540,272)}
+  const iy=315,is=340;
+  if(img){x.save();rr(x,120,iy,is,is,30);x.clip();x.drawImage(img,120,iy,is,is);x.restore()}
+  else{x.fillStyle="#f6e6da";rr(x,120,iy,is,is,30);x.fill()}
+  const gx=745,cy=545,R=165;x.lineCap="round";x.lineWidth=32;x.strokeStyle="#eadfd5";x.beginPath();x.arc(gx,cy,R,Math.PI,2*Math.PI);x.stroke();
+  const g=x.createLinearGradient(gx-R,0,gx+R,0);g.addColorStop(0,"#7fb894");g.addColorStop(.5,"#f0b45f");g.addColorStop(1,"#d9674b");
+  if(pct>0){x.strokeStyle=g;x.beginPath();x.arc(gx,cy,R,Math.PI,Math.PI+Math.PI*pct/100);x.stroke()}
+  x.fillStyle="#3b3330";x.font="800 104px "+FONT;x.fillText(pct+"%",gx,cy-8);
+  x.fillStyle=lv[3];x.font="800 46px "+FONT;x.fillText(lv[1],gx,cy+85);
+  x.textAlign="left";x.fillStyle="#5a4f4a";x.font="400 32px "+FONT;let y=wrap(x,lv[2],130,740,820,48,4);
+  y+=34;x.fillStyle="#c45f35";x.font="700 34px "+FONT;x.fillText("勾選的風險因子",130,y);y+=58;
   x.font="500 32px "+FONT;
-  if(!checked.length){x.fillStyle="#5f9e7a";x.fillText("沒有勾選任何風險因子，繼續保持！",130,y);y+=50}
-  else{let col=0;checked.forEach((q,i)=>{const t=q[1];x.font="500 30px "+FONT;const w=x.measureText(t).width+44;if(col+w>820){col=0;y+=64}
-    x.fillStyle="#f6e6da";rr(x,130+col,y-38,w,52,26);x.fill();x.fillStyle="#c45f35";x.fillText(t,130+col+22,y-2);col+=w+14});y+=50}
+  if(!checked.length){x.fillStyle="#5f9e7a";x.fillText("沒有勾選任何風險因子，繼續保持！",130,y)}
+  else{let col=0;checked.forEach(q=>{const t=q[1];x.font="500 30px "+FONT;const w=x.measureText(t).width+44;if(col+w>820){col=0;y+=62}
+    x.fillStyle="#f6e6da";rr(x,130+col,y-38,w,52,26);x.fill();x.fillStyle="#c45f35";x.fillText(t,130+col+22,y-2);col+=w+14})}
   x.fillStyle="#f3ece4";rr(x,110,1130,860,130,20);x.fill();
   x.fillStyle="#857a73";x.font="400 24px "+FONT;wrap(x,DISC,140,1172,800,36,2);x.fillText("資料參考：國民健康署、WHO／IARC",140,1240);
   return c;
 }
 $('dlBtn').onclick=async()=>{try{await document.fonts.ready}catch(e){}
-  const url=drawCard().toDataURL("image/png");$('cardImg').src=url;$('imgBox').style.display="block";
+  const im=await loadImg(res.n);let url;try{url=drawCard(im).toDataURL("image/png")}catch(e){url=drawCard(null).toDataURL("image/png")}
+  $('cardImg').src=url;$('imgBox').style.display="block";
   const a=document.createElement('a');a.href=url;a.download="癌症風險檢測結果.png";document.body.appendChild(a);a.click();a.remove();
   $('imgBox').scrollIntoView({behavior:"smooth",block:"center"})};
 </script>
